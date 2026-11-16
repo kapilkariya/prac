@@ -1,23 +1,34 @@
-
 import java.util.*;
+
+class Node{
+    char ch;
+    int freq;
+    Node left,right;
+    Node(char ch,int freq){
+        this.ch=ch;
+        this.freq=freq;
+    }
+}
 
 class Main {
     public static void main(String[] args) {
+        char[] ch = {'a', 'b', 'c', 'd', 'e', 'f'};
         int[] freq = {5, 9, 12, 13, 16, 45};
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int f : freq) {
-            pq.add(f);
+        PriorityQueue<Node> pq=new PriorityQueue<>(
+            (a,b)->a.freq-b.freq
+        );
+        for(int i=0;i<freq.length;i++){
+            pq.add(new Node(ch[i],freq[i]));
         }
-        int cost=0;
+
         while(pq.size()>1){
-            int a=pq.poll();
-            int b=pq.poll();
-            int sum=a+b;
-            cost+=sum;
-            pq.add(sum);
+            Node a=pq.poll();
+            Node b=pq.poll();
+            Node parent=new Node('-',a.freq+b.freq);
+            parent.left=a;
+            parent.right=b;
+            pq.add(parent);
         }
-        System.out.println("Minimum cost "+cost);
+        print(pq.poll(), "");
     }
 }
